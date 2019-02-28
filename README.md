@@ -1,6 +1,6 @@
 # ESP32, Cloud IoT Core, Kubernetes
 
-Blog post: [http://nilhcem.com/iot/cloud-iot-core-with-the-esp32](http://nilhcem.com/iot/cloud-iot-core-with-the-esp32)
+Blog post: [http://nilhcem.com/iot/cloud-iot-core-with-the-esp32-and-arduino](http://nilhcem.com/iot/cloud-iot-core-with-the-esp32-and-arduino)
 
 ## Projects
 
