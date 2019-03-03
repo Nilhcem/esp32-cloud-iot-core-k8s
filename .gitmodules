@@ -1,0 +1,3 @@
+[submodule "03-esp32_bme280_ciotc_esp-idf/iot-device-sdk-embedded-c"]
+	path = 03-esp32_bme280_ciotc_esp-idf/iot-device-sdk-embedded-c
+	url = git@github.com:GoogleCloudPlatform/iot-device-sdk-embedded-c.git
