@@ -1,4 +1,4 @@
-# ESP32 BME280 Google Cloud IoT Core
+# ESP32 BME280 Google Cloud IoT Core (Arduino)
 
 ESP32 Arduino code that sends BME280 sensor data to Google Cloud IoT Core
 
