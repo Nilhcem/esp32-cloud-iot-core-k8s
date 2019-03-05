@@ -75,4 +75,7 @@ gcloud container clusters delete influxdb-grafana
 # Delete compute engine disks
 gcloud compute disks list
 gcloud compute disks delete <disk-name>
+
+# Delete load balancing services
+open https://console.cloud.google.com/net-services/loadbalancing/loadBalancers/list
 ```
