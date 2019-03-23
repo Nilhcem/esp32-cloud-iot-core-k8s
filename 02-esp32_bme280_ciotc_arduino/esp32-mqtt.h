@@ -1,20 +1,30 @@
 // This file contains static methods for API requests using Wifi / MQTT
 #ifndef __ESP32_MQTT_H__
 #define __ESP32_MQTT_H__
+
+#include <Client.h>
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 
 #include <MQTT.h>
 
 #include <CloudIoTCore.h>
+#include <CloudIoTCoreMqtt.h>
 #include "ciotc_config.h" // Update this file with your configuration
 
-// Initialize the Genuino WiFi SSL client library / RTC
-WiFiClientSecure *netClient;
-MQTTClient *mqttClient;
+// !!REPLACEME!!
+// The MQTT callback function for commands and configuration updates
+// Place your message handler code here.
+void messageReceived(String &topic, String &payload) {
+  Serial.println("incoming: " + topic + " - " + payload);
+}
+///////////////////////////////
 
-// Clout IoT configuration that you don't need to change
+// Initialize WiFi and MQTT for this board
+Client *netClient;
 CloudIoTCoreDevice *device;
+CloudIoTCoreMqtt *mqtt;
+MQTTClient *mqttClient;
 unsigned long iss = 0;
 String jwt;
 
@@ -36,6 +46,7 @@ void setupWifi() {
   Serial.println("Starting wifi");
 
   WiFi.mode(WIFI_STA);
+  // WiFi.setSleep(false); // May help with disconnect? Seems to have been removed from WiFi
   WiFi.begin(ssid, password);
   Serial.println("Connecting to WiFi");
   while (WiFi.status() != WL_CONNECTED) {
@@ -49,51 +60,28 @@ void setupWifi() {
   }
 }
 
-
-///////////////////////////////
-// MQTT common functions
-///////////////////////////////
-void messageReceived(String &topic, String &payload) {
-  Serial.println("incoming: " + topic + " - " + payload);
-}
-
-void startMQTT() {
-  mqttClient->begin("mqtt.googleapis.com", 8883, *netClient);
-  mqttClient->onMessage(messageReceived);
-}
-
-void publishTelemetry(String data) {
-  mqttClient->publish(device->getEventsTopic(), data);
-}
-
-// Helper that just sends default sensor
-void publishState(String data) {
-  mqttClient->publish(device->getStateTopic(), data);
-}
-
-void mqttConnect() {
-  Serial.print("\nconnecting...");
-  while (!mqttClient->connect(device->getClientId().c_str(), "unused", getJwt().c_str(), false)) {
-    Serial.println(mqttClient->lastError());
-    Serial.println(mqttClient->returnCode());
-    delay(1000);
-  }
-  Serial.println("\nconnected!");
-  mqttClient->subscribe(device->getConfigTopic());
-  mqttClient->subscribe(device->getCommandsTopic());
-  publishState("connected");
-}
-
-///////////////////////////////
-// Orchestrates various methods from preceeding code.
-///////////////////////////////
-void connect() {
+void connectWifi() {
   Serial.print("checking wifi...");
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
     delay(1000);
   }
-  mqttConnect();
+}
+
+///////////////////////////////
+// Orchestrates various methods from preceeding code.
+///////////////////////////////
+void publishTelemetry(String data) {
+  mqtt->publishTelemetry(data);
+}
+
+void publishTelemetry(String subfolder, String data) {
+  mqtt->publishTelemetry(subfolder, data);
+}
+
+void connect() {
+  connectWifi();
+  mqtt->mqttConnect();
 }
 
 void setupCloudIoT() {
@@ -104,6 +92,8 @@ void setupCloudIoT() {
   setupWifi();
   netClient = new WiFiClientSecure();
   mqttClient = new MQTTClient(512);
-  startMQTT();
+  mqttClient->setOptions(180, true, 1000); // keepAlive, cleanSession, timeout
+  mqtt = new CloudIoTCoreMqtt(mqttClient, netClient, device);
+  mqtt->startMQTT();
 }
 #endif //__ESP32_MQTT_H__

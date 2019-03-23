@@ -40,7 +40,7 @@ void loop() {
     connect();
   }
 
-  // publish a message roughly every second.
+  // publish a message roughly every PUBLISH_DELAY ms.
   if (millis() - lastMillis > PUBLISH_DELAY) {
     lastMillis = millis();
 
