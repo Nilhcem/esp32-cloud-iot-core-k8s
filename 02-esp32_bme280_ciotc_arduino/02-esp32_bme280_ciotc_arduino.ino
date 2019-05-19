@@ -1,4 +1,10 @@
-#include "esp32-mqtt.h"
+// The MQTT callback function for commands and configuration updates
+// Place your message handler code here.
+void messageReceived(String &topic, String &payload) {
+  Serial.println("incoming: " + topic + " - " + payload);
+}
+
+#include "universal-mqtt.h"
 
 #include <Wire.h>
 #include <SPI.h>

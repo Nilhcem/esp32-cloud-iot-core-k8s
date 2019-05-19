@@ -1,6 +1,6 @@
 # ESP32 BME280 Google Cloud IoT Core (Arduino)
 
-ESP32 Arduino code that sends BME280 sensor data to Google Cloud IoT Core
+ESP32/ESP8266 Arduino code that sends BME280 sensor data to Google Cloud IoT Core
 
 ## Dependencies
 
@@ -99,6 +99,10 @@ Depending on your board, you'll also need to modify the SDA and SCL pin names in
 **DOIT Esp32 DevKit v1**
 - SDA: `21`
 - SCL: `22`
+
+**ESP8266 WeMos D1 Mini**
+- SDA: `D2`
+- SCL: `D1`
 
 
 ## Verify that it works
