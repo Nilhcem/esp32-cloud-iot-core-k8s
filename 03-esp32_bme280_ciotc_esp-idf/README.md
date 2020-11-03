@@ -11,7 +11,7 @@ git submodule update
 ```
 
 - Download and install ESP-IDF
-  [https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html]()
+  [https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html)
 
 
 ## Setup Cloud IoT Core & Wiring
